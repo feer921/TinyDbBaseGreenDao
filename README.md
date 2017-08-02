@@ -1,0 +1,2 @@
+# TinyDbBaseGreenDao
+基于GreenDao orm框架下的一些关于数据库的通用小框架
