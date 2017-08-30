@@ -2,7 +2,6 @@ package me.common.tinydb;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -27,7 +26,14 @@ public abstract class AbsTableUpgrader {
     protected int oldVersion;
     protected SQLiteDatabase db;//或者使用SQLiteDatabase代表更通用一点
 
-    public AbsTableUpgrader(SQLiteDatabase db, int newVersion, int oldVersion, @NonNull String tableName) {
+    /**
+     *
+     * @param db
+     * @param newVersion
+     * @param oldVersion
+     * @param tableName 请保持该参数为非空
+     */
+    public AbsTableUpgrader(SQLiteDatabase db, int newVersion, int oldVersion,String tableName) {
         this.tableName = tableName;
         this.newVersion = newVersion;
         this.oldVersion = oldVersion;
