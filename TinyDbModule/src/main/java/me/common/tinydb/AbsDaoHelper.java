@@ -11,14 +11,14 @@ import java.util.List;
  * Date: 2017/5/6<br>
  * Time: 10:14<br>
  * DESC: 通用的Dao helper,提供一些通用的表的CRUD；一般把子类写成单例模式并根据业务需求扩展自身来使用
- * T:为数据对象类型；I为本类自身（方便链式调用，在本类作用不大）；PK:指代AbstractDao中所对应的某表的Primary key类型<br>
+ * T:为数据对象类型,对应一张表结构；I为本类自身（方便链式调用，在本类作用不大）；PK:指代AbstractDao中所对应的某表的Primary key类型<br>
  * ******************(^_^)***********************<br>
  */
 
 public abstract class AbsDaoHelper<T, I extends AbsDaoHelper<T, I,PK>,PK> {
     protected final String TAG = getClass().getSimpleName();
     protected AbstractDao<T, PK> curDao;//这里的Long类型指定了Dao的Primary key o Long 类型，一般的表的Primary key 为"_id"字段
-    AbsDaoHelper(){
+    protected AbsDaoHelper(){
         curDao = provideDao();
     }
     protected abstract AbstractDao<T, PK> provideDao();
