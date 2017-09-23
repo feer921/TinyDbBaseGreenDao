@@ -66,7 +66,7 @@ public abstract class AbsTableUpgrader {
             String tempTableName = tableName + "_temp";
             String sql = "ALTER TABLE " + tableName +" RENAME TO " + tempTableName;
             db.execSQL(sql);
-            //2、再创建一次原表，
+            //2、再创建一次原表，这里可以传入false因为上面已经把原表重命名了
             createMyTable(false);
             //3、准备从临时表中把数据给Load进新建的表的前提：获取需要复制数据的所有字段
             ArrayList<String> toInsertDataColumns = getNeedLoadDataColumnsFromTempTable(getIgnoreCopyDataColumns());
@@ -79,10 +79,12 @@ public abstract class AbsTableUpgrader {
                 db.execSQL(sql);
             }
             //5、删除掉生成的临时表
-            db.execSQL("DROP TABLE IF EXISTS " + tempTableName, null);
+            db.execSQL("DROP TABLE IF EXISTS " + tempTableName);
             db.setTransactionSuccessful();
         } catch (Exception ignore) {
             Log.e(TAG, "--> upgradeTables() occur " + ignore);
+//            db.execSQL("DROP TABLE IF EXISTS " + tableName + "_temp");
+//            db.setTransactionSuccessful();
         }
         finally {
             db.endTransaction();
@@ -154,7 +156,12 @@ public abstract class AbsTableUpgrader {
         return ignoreCopyDataColumns;
     }
 
-    public abstract void createMyTable(boolean isNotExists);
+    /**
+     * 重新创建表
+     * 于{@link #upgradeTables()}中调用
+     * @param ifNotExists 创建表时判断表是否已经存在，如果旧表存在的话，直接创建表会失败；true:要判断是否存在；false:不判断表是否存在
+     */
+    public abstract void createMyTable(boolean ifNotExists);
 
     /**
      * 从一张表中获取到所有的列名、字段

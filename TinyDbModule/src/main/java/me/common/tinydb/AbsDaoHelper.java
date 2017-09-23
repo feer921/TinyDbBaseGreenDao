@@ -109,7 +109,10 @@ public abstract class AbsDaoHelper<T, I extends AbsDaoHelper<T, I,PK>,PK> {
         checkDaoNotNull();
         return curDao.queryBuilder();
     }
-    void checkDaoNotNull() {
+	/**
+	 * 让子类可调用，但不可重载
+	**/
+    protected final void checkDaoNotNull() {
         if (curDao == null) {
             curDao = provideDao();
         }
